@@ -1,0 +1,6 @@
+@Laundrocade_HostAddress = http://localhost:5173
+
+GET {{Laundrocade_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
