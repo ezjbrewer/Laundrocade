@@ -1,4 +1,4 @@
-namespace Laundrocade.Models.DTOs.DTOs;
+namespace Laundrocade.Models.DTOs;
 
 public class RegistrationDTO
 {

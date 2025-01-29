@@ -10,7 +10,7 @@ public class Machine
     public string Name { get; set; }
     public decimal TotalLifetimeRevenue { get; set; }
     public DateTime? LastMaintenanceDate { get; set; }
-    public decimal TotalUsageTimeMinutes { get; set; }
+    public decimal? TotalUsageTimeMinutes { get; set; }
     public decimal CostPerUsage { get; set;}
     public decimal OperatingCost { get; set; }
     public bool IsOperational { get; set; }
