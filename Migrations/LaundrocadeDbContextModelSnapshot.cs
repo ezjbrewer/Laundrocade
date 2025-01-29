@@ -22,6 +22,809 @@ namespace Laundrocade.Migrations
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            modelBuilder.Entity("Laundrocade.Models.AuditLog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("AuditCreationDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<string>("ChangeType")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("MachineId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("NewValue")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("OldValue")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("UserProfileId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MachineId");
+
+                    b.HasIndex("UserProfileId");
+
+                    b.ToTable("AuditLogs");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AuditCreationDate = new DateTime(2025, 1, 14, 15, 49, 1, 651, DateTimeKind.Local).AddTicks(2677),
+                            ChangeType = "Location Change",
+                            MachineId = 3,
+                            NewValue = "Location: Gretna",
+                            OldValue = "Location: Bellevue",
+                            UserProfileId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AuditCreationDate = new DateTime(2025, 1, 19, 15, 49, 1, 651, DateTimeKind.Local).AddTicks(2679),
+                            ChangeType = "Glass Cracked",
+                            MachineId = 1,
+                            NewValue = "Replaced washer door glass with reinforced material.",
+                            OldValue = "Washer door glass shattered due to impact.",
+                            UserProfileId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AuditCreationDate = new DateTime(2025, 1, 24, 15, 49, 1, 651, DateTimeKind.Local).AddTicks(2681),
+                            ChangeType = "Coin Jam",
+                            MachineId = 6,
+                            NewValue = "Removed blockage and cleaned coin sensor.",
+                            OldValue = "Coin slot blocked, unable to accept payments.",
+                            UserProfileId = 1
+                        });
+                });
+
+            modelBuilder.Entity("Laundrocade.Models.Location", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CityName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("StateId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("StreetName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("StreetNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Suite")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StateId");
+
+                    b.ToTable("Locations");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CityName = "Gretna",
+                            StateId = 27,
+                            StreetName = "Pottleworth Street",
+                            StreetNumber = 242,
+                            Suite = "A",
+                            ZipCode = "68028"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CityName = "Omaha",
+                            StateId = 27,
+                            StreetName = "Maple Avenue",
+                            StreetNumber = 555,
+                            ZipCode = "68114"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CityName = "Lincoln",
+                            StateId = 27,
+                            StreetName = "Farnam Street",
+                            StreetNumber = 1201,
+                            Suite = "Suite 300",
+                            ZipCode = "68508"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CityName = "Fremont",
+                            StateId = 27,
+                            StreetName = "Prairie Lane",
+                            StreetNumber = 789,
+                            ZipCode = "68025"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CityName = "Bellevue",
+                            StateId = 27,
+                            StreetName = "Highland Drive",
+                            StreetNumber = 301,
+                            Suite = "B",
+                            ZipCode = "68005"
+                        });
+                });
+
+            modelBuilder.Entity("Laundrocade.Models.Machine", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("CostPerUsage")
+                        .HasColumnType("numeric");
+
+                    b.Property<bool>("IsOperational")
+                        .HasColumnType("boolean");
+
+                    b.Property<DateTime?>("LastMaintenanceDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("LocationId")
+                        .HasColumnType("integer");
+
+                    b.Property<int>("MachineTypeId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Maker")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Model")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("OperatingCost")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("SerialNumber")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<decimal>("TotalLifetimeRevenue")
+                        .HasColumnType("numeric");
+
+                    b.Property<decimal?>("TotalUsageTimeMinutes")
+                        .HasColumnType("numeric");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("LocationId");
+
+                    b.HasIndex("MachineTypeId");
+
+                    b.ToTable("Machines");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CostPerUsage = 2.50m,
+                            IsOperational = true,
+                            LastMaintenanceDate = new DateTime(2024, 11, 29, 15, 49, 1, 651, DateTimeKind.Local).AddTicks(2530),
+                            LocationId = 1,
+                            MachineTypeId = 1,
+                            Maker = "Atlantis Tech",
+                            Model = "AquaFlow X1",
+                            Name = "Main Washer 1",
+                            OperatingCost = 120.00m,
+                            SerialNumber = "AT-W12345",
+                            TotalLifetimeRevenue = 0m,
+                            TotalUsageTimeMinutes = 45m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CostPerUsage = 2.50m,
+                            IsOperational = true,
+                            LastMaintenanceDate = new DateTime(2024, 12, 29, 15, 49, 1, 651, DateTimeKind.Local).AddTicks(2589),
+                            LocationId = 1,
+                            MachineTypeId = 1,
+                            Maker = "Atlantis Tech",
+                            Model = "AquaFlow X2",
+                            Name = "Main Washer 2",
+                            OperatingCost = 120.00m,
+                            SerialNumber = "AT-W12346",
+                            TotalLifetimeRevenue = 0m,
+                            TotalUsageTimeMinutes = 45m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CostPerUsage = 2.00m,
+                            IsOperational = true,
+                            LastMaintenanceDate = new DateTime(2024, 10, 29, 15, 49, 1, 651, DateTimeKind.Local).AddTicks(2593),
+                            LocationId = 1,
+                            MachineTypeId = 2,
+                            Maker = "Wayne Industries",
+                            Model = "HeatWave 2000",
+                            Name = "Main Dryer 1",
+                            OperatingCost = 150.00m,
+                            SerialNumber = "WI-D98765",
+                            TotalLifetimeRevenue = 0m,
+                            TotalUsageTimeMinutes = 60m
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CostPerUsage = 2.00m,
+                            IsOperational = true,
+                            LastMaintenanceDate = new DateTime(2024, 9, 29, 15, 49, 1, 651, DateTimeKind.Local).AddTicks(2596),
+                            LocationId = 2,
+                            MachineTypeId = 2,
+                            Maker = "Wayne Industries",
+                            Model = "HeatWave 2100",
+                            Name = "Downtown Dryer 1",
+                            OperatingCost = 150.00m,
+                            SerialNumber = "WI-D98766",
+                            TotalLifetimeRevenue = 0m,
+                            TotalUsageTimeMinutes = 60m
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CostPerUsage = 2.75m,
+                            IsOperational = true,
+                            LastMaintenanceDate = new DateTime(2024, 11, 29, 15, 49, 1, 651, DateTimeKind.Local).AddTicks(2601),
+                            LocationId = 2,
+                            MachineTypeId = 1,
+                            Maker = "LexCorp Appliances",
+                            Model = "TideMaster 3000",
+                            Name = "Downtown Washer 1",
+                            OperatingCost = 130.00m,
+                            SerialNumber = "LC-W11111",
+                            TotalLifetimeRevenue = 0m,
+                            TotalUsageTimeMinutes = 45m
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CostPerUsage = 1.50m,
+                            IsOperational = true,
+                            LastMaintenanceDate = new DateTime(2024, 12, 29, 15, 49, 1, 651, DateTimeKind.Local).AddTicks(2605),
+                            LocationId = 2,
+                            MachineTypeId = 3,
+                            Maker = "Kord Enterprises",
+                            Model = "SnackBot S1",
+                            Name = "Snack Vending 1",
+                            OperatingCost = 1040.00m,
+                            SerialNumber = "KE-V44444",
+                            TotalLifetimeRevenue = 0m
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CostPerUsage = 1.75m,
+                            IsOperational = true,
+                            LastMaintenanceDate = new DateTime(2024, 12, 29, 15, 49, 1, 651, DateTimeKind.Local).AddTicks(2607),
+                            LocationId = 3,
+                            MachineTypeId = 3,
+                            Maker = "Kord Enterprises",
+                            Model = "DrinkMaster D2",
+                            Name = "Beverage Vending 1",
+                            OperatingCost = 1040.00m,
+                            SerialNumber = "KE-V55555",
+                            TotalLifetimeRevenue = 0m
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CostPerUsage = 1.75m,
+                            IsOperational = true,
+                            LastMaintenanceDate = new DateTime(2024, 11, 29, 15, 49, 1, 651, DateTimeKind.Local).AddTicks(2610),
+                            LocationId = 3,
+                            MachineTypeId = 2,
+                            Maker = "Wayne Industries",
+                            Model = "HeatWave 2200",
+                            Name = "Fremont Dryer 1",
+                            OperatingCost = 140.00m,
+                            SerialNumber = "WI-D98767",
+                            TotalLifetimeRevenue = 0m,
+                            TotalUsageTimeMinutes = 50m
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CostPerUsage = 3.00m,
+                            IsOperational = true,
+                            LastMaintenanceDate = new DateTime(2024, 10, 29, 15, 49, 1, 651, DateTimeKind.Local).AddTicks(2613),
+                            LocationId = 4,
+                            MachineTypeId = 1,
+                            Maker = "Queen Consolidated",
+                            Model = "WaveBlaster 4000",
+                            Name = "Bellevue Washer 1",
+                            OperatingCost = 110.00m,
+                            SerialNumber = "QC-W22222",
+                            TotalLifetimeRevenue = 0m,
+                            TotalUsageTimeMinutes = 40m
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CostPerUsage = 2.50m,
+                            IsOperational = true,
+                            LastMaintenanceDate = new DateTime(2024, 10, 29, 15, 49, 1, 651, DateTimeKind.Local).AddTicks(2616),
+                            LocationId = 4,
+                            MachineTypeId = 2,
+                            Maker = "LexCorp Appliances",
+                            Model = "HeatPro X",
+                            Name = "Bellevue Dryer 1",
+                            OperatingCost = 130.00m,
+                            SerialNumber = "LC-D33333",
+                            TotalLifetimeRevenue = 0m,
+                            TotalUsageTimeMinutes = 55m
+                        });
+                });
+
+            modelBuilder.Entity("Laundrocade.Models.MachineType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("MachineTypeName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MachineTypes");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            MachineTypeName = "Washer"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            MachineTypeName = "Dryer"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            MachineTypeName = "Vending Machine"
+                        });
+                });
+
+            modelBuilder.Entity("Laundrocade.Models.MaintenanceRequest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Cost")
+                        .HasColumnType("numeric");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<bool>("IsRequestFulfilled")
+                        .HasColumnType("boolean");
+
+                    b.Property<int>("MachineId")
+                        .HasColumnType("integer");
+
+                    b.Property<DateTime?>("MaintenanceDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<DateTime>("RequestCreationDate")
+                        .HasColumnType("timestamp without time zone");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MachineId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("MaintenanceRequests");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Cost = 75.00m,
+                            Description = "Replaced heating element and cleaned lint trap.",
+                            IsRequestFulfilled = true,
+                            MachineId = 3,
+                            MaintenanceDate = new DateTime(2025, 1, 22, 15, 49, 1, 651, DateTimeKind.Local).AddTicks(2642),
+                            RequestCreationDate = new DateTime(2025, 1, 19, 15, 49, 1, 651, DateTimeKind.Local).AddTicks(2647),
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Cost = 50.00m,
+                            Description = "Restocked vending machine and calibrated coin sensor.",
+                            IsRequestFulfilled = true,
+                            MachineId = 6,
+                            MaintenanceDate = new DateTime(2025, 1, 26, 15, 49, 1, 651, DateTimeKind.Local).AddTicks(2650),
+                            RequestCreationDate = new DateTime(2025, 1, 24, 15, 49, 1, 651, DateTimeKind.Local).AddTicks(2651),
+                            UserId = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Cost = 0.00m,
+                            Description = "Reported unusual noise during spin cycle. Pending inspection.",
+                            IsRequestFulfilled = false,
+                            MachineId = 9,
+                            RequestCreationDate = new DateTime(2025, 1, 29, 15, 49, 1, 651, DateTimeKind.Local).AddTicks(2654),
+                            UserId = 1
+                        });
+                });
+
+            modelBuilder.Entity("Laundrocade.Models.State", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("StateAbbreviation")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("StateName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("States");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            StateAbbreviation = "AL",
+                            StateName = "Alabama"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            StateAbbreviation = "AK",
+                            StateName = "Alaska"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            StateAbbreviation = "AZ",
+                            StateName = "Arizona"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            StateAbbreviation = "AR",
+                            StateName = "Arkansas"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            StateAbbreviation = "CA",
+                            StateName = "California"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            StateAbbreviation = "CO",
+                            StateName = "Colorado"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            StateAbbreviation = "CT",
+                            StateName = "Connecticut"
+                        },
+                        new
+                        {
+                            Id = 8,
+                            StateAbbreviation = "DE",
+                            StateName = "Delaware"
+                        },
+                        new
+                        {
+                            Id = 9,
+                            StateAbbreviation = "FL",
+                            StateName = "Florida"
+                        },
+                        new
+                        {
+                            Id = 10,
+                            StateAbbreviation = "GA",
+                            StateName = "Georgia"
+                        },
+                        new
+                        {
+                            Id = 11,
+                            StateAbbreviation = "HI",
+                            StateName = "Hawaii"
+                        },
+                        new
+                        {
+                            Id = 12,
+                            StateAbbreviation = "ID",
+                            StateName = "Idaho"
+                        },
+                        new
+                        {
+                            Id = 13,
+                            StateAbbreviation = "IL",
+                            StateName = "Illinois"
+                        },
+                        new
+                        {
+                            Id = 14,
+                            StateAbbreviation = "IN",
+                            StateName = "Indiana"
+                        },
+                        new
+                        {
+                            Id = 15,
+                            StateAbbreviation = "IA",
+                            StateName = "Iowa"
+                        },
+                        new
+                        {
+                            Id = 16,
+                            StateAbbreviation = "KS",
+                            StateName = "Kansas"
+                        },
+                        new
+                        {
+                            Id = 17,
+                            StateAbbreviation = "KY",
+                            StateName = "Kentucky"
+                        },
+                        new
+                        {
+                            Id = 18,
+                            StateAbbreviation = "LA",
+                            StateName = "Louisiana"
+                        },
+                        new
+                        {
+                            Id = 19,
+                            StateAbbreviation = "ME",
+                            StateName = "Maine"
+                        },
+                        new
+                        {
+                            Id = 20,
+                            StateAbbreviation = "MD",
+                            StateName = "Maryland"
+                        },
+                        new
+                        {
+                            Id = 21,
+                            StateAbbreviation = "MA",
+                            StateName = "Massachusetts"
+                        },
+                        new
+                        {
+                            Id = 22,
+                            StateAbbreviation = "MI",
+                            StateName = "Michigan"
+                        },
+                        new
+                        {
+                            Id = 23,
+                            StateAbbreviation = "MN",
+                            StateName = "Minnesota"
+                        },
+                        new
+                        {
+                            Id = 24,
+                            StateAbbreviation = "MS",
+                            StateName = "Mississippi"
+                        },
+                        new
+                        {
+                            Id = 25,
+                            StateAbbreviation = "MO",
+                            StateName = "Missouri"
+                        },
+                        new
+                        {
+                            Id = 26,
+                            StateAbbreviation = "MT",
+                            StateName = "Montana"
+                        },
+                        new
+                        {
+                            Id = 27,
+                            StateAbbreviation = "NE",
+                            StateName = "Nebraska"
+                        },
+                        new
+                        {
+                            Id = 28,
+                            StateAbbreviation = "NV",
+                            StateName = "Nevada"
+                        },
+                        new
+                        {
+                            Id = 29,
+                            StateAbbreviation = "NH",
+                            StateName = "New Hampshire"
+                        },
+                        new
+                        {
+                            Id = 30,
+                            StateAbbreviation = "NJ",
+                            StateName = "New Jersey"
+                        },
+                        new
+                        {
+                            Id = 31,
+                            StateAbbreviation = "NM",
+                            StateName = "New Mexico"
+                        },
+                        new
+                        {
+                            Id = 32,
+                            StateAbbreviation = "NY",
+                            StateName = "New York"
+                        },
+                        new
+                        {
+                            Id = 33,
+                            StateAbbreviation = "NC",
+                            StateName = "North Carolina"
+                        },
+                        new
+                        {
+                            Id = 34,
+                            StateAbbreviation = "ND",
+                            StateName = "North Dakota"
+                        },
+                        new
+                        {
+                            Id = 35,
+                            StateAbbreviation = "OH",
+                            StateName = "Ohio"
+                        },
+                        new
+                        {
+                            Id = 36,
+                            StateAbbreviation = "OK",
+                            StateName = "Oklahoma"
+                        },
+                        new
+                        {
+                            Id = 37,
+                            StateAbbreviation = "OR",
+                            StateName = "Oregon"
+                        },
+                        new
+                        {
+                            Id = 38,
+                            StateAbbreviation = "PA",
+                            StateName = "Pennsylvania"
+                        },
+                        new
+                        {
+                            Id = 39,
+                            StateAbbreviation = "RI",
+                            StateName = "Rhode Island"
+                        },
+                        new
+                        {
+                            Id = 40,
+                            StateAbbreviation = "SC",
+                            StateName = "South Carolina"
+                        },
+                        new
+                        {
+                            Id = 41,
+                            StateAbbreviation = "SD",
+                            StateName = "South Dakota"
+                        },
+                        new
+                        {
+                            Id = 42,
+                            StateAbbreviation = "TN",
+                            StateName = "Tennessee"
+                        },
+                        new
+                        {
+                            Id = 43,
+                            StateAbbreviation = "TX",
+                            StateName = "Texas"
+                        },
+                        new
+                        {
+                            Id = 44,
+                            StateAbbreviation = "UT",
+                            StateName = "Utah"
+                        },
+                        new
+                        {
+                            Id = 45,
+                            StateAbbreviation = "VT",
+                            StateName = "Vermont"
+                        },
+                        new
+                        {
+                            Id = 46,
+                            StateAbbreviation = "VA",
+                            StateName = "Virginia"
+                        },
+                        new
+                        {
+                            Id = 47,
+                            StateAbbreviation = "WA",
+                            StateName = "Washington"
+                        },
+                        new
+                        {
+                            Id = 48,
+                            StateAbbreviation = "WV",
+                            StateName = "West Virginia"
+                        },
+                        new
+                        {
+                            Id = 49,
+                            StateAbbreviation = "WI",
+                            StateName = "Wisconsin"
+                        },
+                        new
+                        {
+                            Id = 50,
+                            StateAbbreviation = "WY",
+                            StateName = "Wyoming"
+                        });
+                });
+
             modelBuilder.Entity("Laundrocade.Models.UserProfile", b =>
                 {
                     b.Property<int>("Id")
@@ -30,7 +833,7 @@ namespace Laundrocade.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<string>("Address")
+                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -46,6 +849,10 @@ namespace Laundrocade.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("UserName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("IdentityUserId");
@@ -56,10 +863,11 @@ namespace Laundrocade.Migrations
                         new
                         {
                             Id = 1,
-                            Address = "101 Main Street",
+                            Email = "admina@strator.comx",
                             FirstName = "Admina",
                             IdentityUserId = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
-                            LastName = "Strator"
+                            LastName = "Strator",
+                            UserName = "Lord Admin"
                         });
                 });
 
@@ -190,13 +998,13 @@ namespace Laundrocade.Migrations
                         {
                             Id = "dbc40bc6-0829-4ac5-a3ed-180f5e916a5f",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "77e245a5-3895-4006-8eeb-7c35bc2fb390",
+                            ConcurrencyStamp = "79ca5b54-3b41-450c-a536-009e7574a53c",
                             Email = "admina@strator.comx",
                             EmailConfirmed = false,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAIAAYagAAAAENVu+qmJBsl9b9AV0ZT6/DToNdCJh1R5KEV6Jf7hVrEsp5RoI0cWoBlFhgwKUQwAeg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEE2tT8kM234Mu/EG/ZDi+XJ6Y1HB35D3LHGQo+LIyfHR5T6JJ9NXsnFuQ33EsCX7bw==",
                             PhoneNumberConfirmed = false,
-                            SecurityStamp = "790f3f66-3094-4392-afac-a45d17cd1f0c",
+                            SecurityStamp = "65fc3dd7-1189-4ad7-b748-6955e3225d58",
                             TwoFactorEnabled = false,
                             UserName = "Administrator"
                         });
@@ -288,6 +1096,74 @@ namespace Laundrocade.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("Laundrocade.Models.AuditLog", b =>
+                {
+                    b.HasOne("Laundrocade.Models.Machine", "Machine")
+                        .WithMany()
+                        .HasForeignKey("MachineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Laundrocade.Models.UserProfile", "UserProfile")
+                        .WithMany()
+                        .HasForeignKey("UserProfileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Machine");
+
+                    b.Navigation("UserProfile");
+                });
+
+            modelBuilder.Entity("Laundrocade.Models.Location", b =>
+                {
+                    b.HasOne("Laundrocade.Models.State", "State")
+                        .WithMany()
+                        .HasForeignKey("StateId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("State");
+                });
+
+            modelBuilder.Entity("Laundrocade.Models.Machine", b =>
+                {
+                    b.HasOne("Laundrocade.Models.Location", "Location")
+                        .WithMany()
+                        .HasForeignKey("LocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Laundrocade.Models.MachineType", "MachineType")
+                        .WithMany()
+                        .HasForeignKey("MachineTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Location");
+
+                    b.Navigation("MachineType");
+                });
+
+            modelBuilder.Entity("Laundrocade.Models.MaintenanceRequest", b =>
+                {
+                    b.HasOne("Laundrocade.Models.Machine", "Machine")
+                        .WithMany()
+                        .HasForeignKey("MachineId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Laundrocade.Models.UserProfile", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Machine");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("Laundrocade.Models.UserProfile", b =>

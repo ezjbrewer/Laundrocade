@@ -6,7 +6,7 @@ public class AuditLogDTO
 {
     public int Id { get; set; }
     public int MachineId { get; set; }
-    public int UserId { get; set; }
+    public int UserProfileId { get; set; }
     public string ChangeType { get; set; }
     public string OldValue { get; set; }
     public string NewValue { get; set; }
